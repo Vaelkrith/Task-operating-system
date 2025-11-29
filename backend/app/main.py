@@ -55,8 +55,7 @@ async def optimize(payload: OptimizePayload, current_user: dict = Depends(get_cu
         r = await db.schedules.insert_one(schedule_doc)
         schedule_doc["id"] = str(r.inserted_id)
         # Convert _id to string and remove it from response to avoid ObjectId serialization error
-        if "_id" in schedule_doc:
-            del schedule_doc["_id"]
+        schedule_doc.pop("_id", None)
         return {"schedule": schedule_doc, "agent_logs": res["agent_logs"]}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Optimization failed: {str(e)}")
@@ -69,25 +68,15 @@ async def get_schedules(current_user: dict = Depends(get_current_user)):
         user_id = current_user.get("id")
         db = get_db()
         cursor = db.schedules.find({"user_id": user_id})
+        
         items = []
-        # Support both Motor and in-memory cursors
-        try:
-            # Try Motor-style sort
-            sorted_cursor = cursor.sort([("created_at", -1)])
-            async for doc in sorted_cursor:
-                doc["id"] = str(doc.get("_id"))
-                if "_id" in doc:
-                    del doc["_id"]
-                items.append(doc)
-        except Exception:
-            # Fallback to in-memory iteration (no sort)
-            async for doc in cursor:
-                doc["id"] = str(doc.get("_id"))
-                if "_id" in doc:
-                    del doc["_id"]
-                items.append(doc)
-            # Sort in memory
-            items.sort(key=lambda x: x.get("created_at", ""), reverse=True)
+        # In-memory DB's find() returns an async iterator directly
+        # Motor's find() returns a cursor object.
+        async for doc in cursor:
+            doc["id"] = str(doc.get("_id"))
+            doc.pop("_id", None)
+            items.append(doc)
+        items.sort(key=lambda x: x.get("created_at"), reverse=True)
         return {"schedules": items}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to fetch schedules: {str(e)}")
