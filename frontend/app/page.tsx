@@ -2,10 +2,18 @@
 
 import Link from 'next/link'
 import { ArrowRight, Zap, Calendar, BarChart3, Sparkles } from 'lucide-react'
-import { MotionDiv, MotionP, MotionSection } from '@/components/Motion'
+import { motion, Variants } from "framer-motion";
+import type { HTMLMotionProps } from "framer-motion";
+import React from 'react'
+
+// Define wrapped motion components
+const MotionDiv = motion.div as React.FC<HTMLMotionProps<"div">>;
+const MotionP = motion.p as React.FC<HTMLMotionProps<"p">>;
+const MotionSection = motion.section as React.FC<HTMLMotionProps<"section">>;
+
 
 export default function Home() {
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -16,7 +24,7 @@ export default function Home() {
     },
   }
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,

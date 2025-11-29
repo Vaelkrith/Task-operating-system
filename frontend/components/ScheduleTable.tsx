@@ -1,8 +1,13 @@
 'use client'
 
 import React from 'react'
-import { MotionDiv } from '@/components/Motion'
+import { motion } from 'framer-motion'
+import type { HTMLMotionProps } from 'framer-motion'
 import { CheckCircle2, Coffee, BookOpen, Clock } from 'lucide-react'
+
+// Define wrapped motion components
+const MotionDiv = motion.div as React.FC<HTMLMotionProps<"div">>;
+
 
 export default function ScheduleTable({ schedule }: { schedule: any }) {
   if (!schedule) return (

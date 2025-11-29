@@ -1,9 +1,14 @@
 'use client'
 
 import React, { useState } from 'react'
-import { MotionButton, MotionDiv } from '@/components/Motion'
-import { AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
+import type { HTMLMotionProps } from "framer-motion";
 import { ChevronDown, Search, ListTodo, Clock, CheckCircle } from 'lucide-react'
+
+// Define wrapped motion components
+const MotionDiv = motion.div as React.FC<HTMLMotionProps<"div">>;
+const MotionButton = motion.button as React.FC<HTMLMotionProps<"button">>;
+
 
 export default function AgentLogs({ logs }: { logs: any[] }) {
   const [expanded, setExpanded] = useState<Set<number>>(new Set())
