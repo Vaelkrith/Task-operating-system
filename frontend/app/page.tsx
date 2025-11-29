@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { ArrowRight, Zap, Calendar, BarChart3, Sparkles } from 'lucide-react'
-import { motion } from 'framer-motion'
+import { MotionDiv, MotionP, MotionSection } from '@/components/Motion'
 
 export default function Home() {
   const containerVariants = {
@@ -51,12 +51,12 @@ export default function Home() {
 
       {/* Animated Background Elements */}
       <div className="fixed inset-0 -z-10 pointer-events-none">
-        <motion.div
+        <MotionDiv
           className="absolute top-20 left-10 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl"
           animate={{ y: [0, 50, 0], x: [0, 30, 0] }}
           transition={{ duration: 8, repeat: Infinity }}
         />
-        <motion.div
+        <MotionDiv
           className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-600/20 rounded-full blur-3xl"
           animate={{ y: [0, -50, 0], x: [0, -30, 0] }}
           transition={{ duration: 10, repeat: Infinity }}
@@ -65,22 +65,22 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="flex-1 flex items-center justify-center px-4 py-20 relative">
-        <motion.div
+        <MotionDiv
           className="max-w-5xl mx-auto text-center relative z-10"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
           {/* Badge */}
-          <motion.div variants={itemVariants} className="mb-8 flex justify-center">
+          <MotionDiv variants={itemVariants} className="mb-8 flex justify-center">
             <div className="badge-premium">
               <Sparkles className="w-4 h-4" />
               <span>Powered by Advanced AI Agents</span>
             </div>
-          </motion.div>
+          </MotionDiv>
 
           {/* Hero Title */}
-          <motion.div variants={itemVariants}>
+          <MotionDiv variants={itemVariants}>
             <h1 className="text-6xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight">
               <span className="gradient-text">
                 Optimize Your
@@ -90,19 +90,19 @@ export default function Home() {
                 Campus Day
               </span>
             </h1>
-          </motion.div>
+          </MotionDiv>
 
           {/* Subtitle */}
-          <motion.p
+          <MotionP
             variants={itemVariants}
             className="text-xl md:text-2xl text-white/60 mb-12 max-w-2xl mx-auto leading-relaxed font-light"
           >
             AI-powered schedule generation that adapts to your classes, goals, and study preferences. 
             <span className="text-white font-semibold"> Make every moment count.</span>
-          </motion.p>
+          </MotionP>
 
           {/* CTA Buttons */}
-          <motion.div
+          <MotionDiv
             variants={itemVariants}
             className="flex flex-col md:flex-row gap-4 justify-center mb-16"
           >
@@ -120,17 +120,17 @@ export default function Home() {
               <span>Try Demo</span>
               <Sparkles className="w-5 h-5" />
             </Link>
-          </motion.div>
+          </MotionDiv>
 
           {/* Features Grid */}
-          <motion.div
+          <MotionDiv
             variants={itemVariants}
             className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-20"
           >
             {features.map((feature, idx) => {
               const Icon = feature.icon
               return (
-                <motion.div
+                <MotionDiv
                   key={idx}
                   className="card-premium group"
                   whileHover={{ y: -8 }}
@@ -145,13 +145,13 @@ export default function Home() {
                   </div>
                   <h3 className="text-xl font-bold mb-2 group-hover:text-cyan-400 transition-colors">{feature.title}</h3>
                   <p className="text-white/60 text-sm leading-relaxed group-hover:text-white/80 transition-colors">{feature.description}</p>
-                </motion.div>
+                </MotionDiv>
               )
             })}
-          </motion.div>
+          </MotionDiv>
 
           {/* Stats */}
-          <motion.div
+          <MotionDiv
             variants={itemVariants}
             className="grid grid-cols-3 gap-6 mt-20 max-w-2xl mx-auto"
           >
@@ -165,12 +165,12 @@ export default function Home() {
                 <div className="text-sm text-white/60">{stat.label}</div>
               </div>
             ))}
-          </motion.div>
-        </motion.div>
+          </MotionDiv>
+        </MotionDiv>
       </section>
 
       {/* Footer CTA */}
-      <motion.section 
+      <MotionSection 
         className="relative py-20 px-4"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
@@ -190,7 +190,7 @@ export default function Home() {
             </Link>
           </div>
         </div>
-      </motion.section>
+      </MotionSection>
     </div>
   )
 }

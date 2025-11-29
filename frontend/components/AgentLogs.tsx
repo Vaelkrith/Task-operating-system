@@ -1,7 +1,8 @@
 'use client'
 
 import React, { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { MotionButton, MotionDiv } from '@/components/Motion'
+import { AnimatePresence } from 'framer-motion'
 import { ChevronDown, Search, ListTodo, Clock, CheckCircle } from 'lucide-react'
 
 export default function AgentLogs({ logs }: { logs: any[] }) {
@@ -48,14 +49,14 @@ export default function AgentLogs({ logs }: { logs: any[] }) {
   return (
     <div className="space-y-3">
       {logs.map((log, idx) => (
-        <motion.div
+        <MotionDiv
           key={idx}
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: idx * 0.1 }}
           className={`timeline-item`}
         >
-          <motion.div
+          <MotionDiv
             className={`glass border-l-4 cursor-pointer group hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-300`}
             onClick={() => log.detail && toggleExpanded(idx)}
             style={{
@@ -77,7 +78,7 @@ export default function AgentLogs({ logs }: { logs: any[] }) {
 
                     <AnimatePresence>
                       {log.detail && expanded.has(idx) && (
-                        <motion.div
+                        <MotionDiv
                           initial={{ opacity: 0, height: 0 }}
                           animate={{ opacity: 1, height: 'auto' }}
                           exit={{ opacity: 0, height: 0 }}
@@ -86,14 +87,14 @@ export default function AgentLogs({ logs }: { logs: any[] }) {
                           {typeof log.detail === 'string'
                             ? log.detail
                             : JSON.stringify(log.detail, null, 2)}
-                        </motion.div>
+                        </MotionDiv>
                       )}
                     </AnimatePresence>
                   </div>
                 </div>
 
                 {log.detail && (
-                  <motion.button
+                  <MotionButton
                     className="flex-shrink-0 p-2 rounded-lg hover:bg-white/10 transition-colors"
                     onClick={(e) => {
                       e.stopPropagation()
@@ -102,12 +103,12 @@ export default function AgentLogs({ logs }: { logs: any[] }) {
                     animate={{ rotate: expanded.has(idx) ? 180 : 0 }}
                   >
                     <ChevronDown className="w-5 h-5 text-white/60" />
-                  </motion.button>
+                  </MotionButton>
                 )}
               </div>
             </div>
-          </motion.div>
-        </motion.div>
+          </MotionDiv>
+        </MotionDiv>
       ))}
     </div>
   )

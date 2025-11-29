@@ -7,7 +7,7 @@ export default function Settings() {
   const [prefs, setPrefs] = useState<any>({})
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState("")
-  const [messageType, setMessageType] = useState<"success" | "error">("")
+  const [messageType, setMessageType] = useState<"success" | "error" | null>(null)
   const [advanced, setAdvanced] = useState(false)
   const [entries, setEntries] = useState<Array<{key: string; type: string; value: string}>>([])
   const router = useRouter()

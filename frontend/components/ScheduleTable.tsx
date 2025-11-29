@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { motion } from 'framer-motion'
+import { MotionDiv } from '@/components/Motion'
 import { CheckCircle2, Coffee, BookOpen, Clock } from 'lucide-react'
 
 export default function ScheduleTable({ schedule }: { schedule: any }) {
@@ -50,7 +50,7 @@ export default function ScheduleTable({ schedule }: { schedule: any }) {
   return (
     <div className="space-y-4">
       {blocks.map((b: any, i: number) => (
-        <motion.div
+        <MotionDiv
           key={i}
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -85,7 +85,7 @@ export default function ScheduleTable({ schedule }: { schedule: any }) {
               </span>
             </div>
           </div>
-        </motion.div>
+        </MotionDiv>
       ))}
     </div>
   )
