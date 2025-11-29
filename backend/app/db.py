@@ -10,8 +10,6 @@ except Exception:
     _HAS_MOTOR = False
 
 MONGO_URI = os.getenv("MONGO_URI")
-if not MONGO_URI:
-    MONGO_URI = "mongodb+srv://bhavyan1499a:REPLACE_ME@harmonia.jguhc.mongodb.net/?appName=harmonia"
 
 _client: Optional[Any] = None
 
@@ -75,17 +73,25 @@ class _InMemoryDB:
 def get_client() -> Any:
     global _client
     if _client is None:
-        if _HAS_MOTOR and AsyncIOMotorClient is not None:
-            # Create motor client, then obtain a Database object.
-            client = AsyncIOMotorClient(MONGO_URI)
+        if _HAS_MOTOR and AsyncIOMotorClient is not None and MONGO_URI:
             try:
+                # Create motor client, then obtain a Database object.
+                client = AsyncIOMotorClient(MONGO_URI)
+                
                 # Preferred: use the default database from the URI if provided
-                db = client.get_default_database()
-            except Exception:
-                # If no default DB present in URI, fall back to a named DB
-                db = client.get_database("smartcampus")
-            _client = db
+                try:
+                    db = client.get_default_database()
+                except Exception:
+                    db = client.get_database("smartcampus")
+
+                print("Successfully connected to MongoDB.")
+                _client = db
+            except Exception as e:
+                print(f"WARNING: MongoDB connection failed: {e}. Falling back to in-memory database.")
+                _client = _InMemoryDB()
         else:
+            if not MONGO_URI:
+                print("WARNING: MONGO_URI not set. Using in-memory database.")
             _client = _InMemoryDB()
     return _client
 
