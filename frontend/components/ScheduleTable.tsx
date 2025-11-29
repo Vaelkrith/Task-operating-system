@@ -1,13 +1,7 @@
 'use client'
 
 import React from 'react'
-import { motion } from 'framer-motion'
-import type { HTMLMotionProps } from 'framer-motion'
 import { CheckCircle2, Coffee, BookOpen, Clock } from 'lucide-react'
-
-// Define wrapped motion components
-const MotionDiv = motion.div as React.FC<HTMLMotionProps<"div">>;
-
 
 export default function ScheduleTable({ schedule }: { schedule: any }) {
   if (!schedule) return (
@@ -55,16 +49,16 @@ export default function ScheduleTable({ schedule }: { schedule: any }) {
   return (
     <div className="space-y-4">
       {blocks.map((b: any, i: number) => (
-        <MotionDiv
+        <div
           key={i}
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: i * 0.1 }}
-          className={`glass border-l-4 border-gradient p-4 hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-300 group`}
+          className="glass border-l-4 border-gradient p-4 hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-300 group animate-fade-in-up"
           style={{
             borderLeftColor: ['#3b82f6', '#10b981', '#a855f7', '#06b6d4'][
               ['task', 'break', 'class'].indexOf(b.type) + 1 || 0
             ],
+            animationFillMode: 'forwards',
+            opacity: 0,
+            animationDelay: `${i * 100}ms`
           }}
         >
           <div className="flex items-start justify-between gap-4">
@@ -90,7 +84,7 @@ export default function ScheduleTable({ schedule }: { schedule: any }) {
               </span>
             </div>
           </div>
-        </MotionDiv>
+        </div>
       ))}
     </div>
   )

@@ -1,14 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import type { HTMLMotionProps } from "framer-motion";
 import { ChevronDown, Search, ListTodo, Clock, CheckCircle } from 'lucide-react'
-
-// Define wrapped motion components
-const MotionDiv = motion.div as React.FC<HTMLMotionProps<"div">>;
-const MotionButton = motion.button as React.FC<HTMLMotionProps<"button">>;
-
 
 export default function AgentLogs({ logs }: { logs: any[] }) {
   const [expanded, setExpanded] = useState<Set<number>>(new Set())
@@ -54,20 +47,17 @@ export default function AgentLogs({ logs }: { logs: any[] }) {
   return (
     <div className="space-y-3">
       {logs.map((log, idx) => (
-        <MotionDiv
+        <div
           key={idx}
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: idx * 0.1 }}
-          className={`timeline-item`}
+          className="timeline-item animate-fade-in-up"
+          style={{ animationFillMode: 'forwards', opacity: 0, animationDelay: `${idx * 100}ms` }}
         >
-          <MotionDiv
-            className={`glass border-l-4 cursor-pointer group hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-300`}
+          <div
+            className={`glass border-l-4 cursor-pointer group hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-300 hover:-translate-y-1`}
             onClick={() => log.detail && toggleExpanded(idx)}
             style={{
               borderLeftColor: ['#3b82f6', '#a855f7', '#10b981', '#f97316']['extractor planner scheduler validator'.indexOf(log.agent.toLowerCase()) || 0],
             }}
-            whileHover={{ y: -2 }}
           >
             <div className="p-4">
               <div className="flex items-start justify-between gap-4">
@@ -80,40 +70,37 @@ export default function AgentLogs({ logs }: { logs: any[] }) {
                       {log.agent}
                     </h4>
                     <p className="text-sm text-white/70 mt-1">{log.message}</p>
-
-                    <AnimatePresence>
-                      {log.detail && expanded.has(idx) && (
-                        <MotionDiv
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: 'auto' }}
-                          exit={{ opacity: 0, height: 0 }}
-                          className="mt-3 p-3 bg-black/30 rounded-lg font-mono text-xs text-cyan-300 overflow-auto max-h-48 border border-purple-500/30"
-                        >
+                    
+                    <div 
+                      className="transition-all duration-500 ease-in-out overflow-hidden"
+                      style={{ maxHeight: expanded.has(idx) ? '500px' : '0px' }}
+                    >
+                      {log.detail && (
+                        <div className="mt-3 p-3 bg-black/30 rounded-lg font-mono text-xs text-cyan-300 overflow-auto max-h-48 border border-purple-500/30">
                           {typeof log.detail === 'string'
                             ? log.detail
                             : JSON.stringify(log.detail, null, 2)}
-                        </MotionDiv>
+                        </div>
                       )}
-                    </AnimatePresence>
+                    </div>
                   </div>
                 </div>
 
                 {log.detail && (
-                  <MotionButton
+                  <button
                     className="flex-shrink-0 p-2 rounded-lg hover:bg-white/10 transition-colors"
                     onClick={(e) => {
                       e.stopPropagation()
                       toggleExpanded(idx)
                     }}
-                    animate={{ rotate: expanded.has(idx) ? 180 : 0 }}
                   >
-                    <ChevronDown className="w-5 h-5 text-white/60" />
-                  </MotionButton>
+                    <ChevronDown className={`w-5 h-5 text-white/60 transition-transform duration-300 ${expanded.has(idx) ? 'rotate-180' : ''}`} />
+                  </button>
                 )}
               </div>
             </div>
-          </MotionDiv>
-        </MotionDiv>
+          </div>
+        </div>
       ))}
     </div>
   )

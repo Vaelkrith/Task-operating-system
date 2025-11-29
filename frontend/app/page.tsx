@@ -2,118 +2,84 @@
 
 import Link from 'next/link'
 import { ArrowRight, Zap, Calendar, BarChart3, Sparkles } from 'lucide-react'
-import { motion, Variants } from "framer-motion";
-import type { HTMLMotionProps } from "framer-motion";
 import React from 'react'
 
-// Define wrapped motion components
-const MotionDiv = motion.div as React.FC<HTMLMotionProps<"div">>;
-const MotionP = motion.p as React.FC<HTMLMotionProps<"p">>;
-const MotionSection = motion.section as React.FC<HTMLMotionProps<"section">>;
+const features = [
+  {
+    icon: Zap,
+    title: 'AI-Powered',
+    description: 'Advanced algorithms that adapt to your study style and preferences',
+    color: 'from-yellow-500 to-orange-500',
+  },
+  {
+    icon: Calendar,
+    title: 'Smart Scheduling',
+    description: 'Optimized schedules with intelligent break placement and transitions',
+    color: 'from-blue-500 to-cyan-500',
+  },
+  {
+    icon: BarChart3,
+    title: 'Analytics',
+    description: 'Track productivity metrics and improve performance over time',
+    color: 'from-purple-500 to-pink-500',
+  },
+]
 
+// A small utility component for staggered fade-in animations
+const AnimatedItem = ({
+  children,
+  delay,
+  className,
+}: {
+  children: React.ReactNode
+  delay: number
+  className?: string
+}) => (
+  <div
+    className={`animate-fade-in-up ${className}`}
+    style={{ animationFillMode: 'forwards', opacity: 0, animationDelay: `${delay}ms` }}
+  >
+    {children}
+  </div>
+)
 
 export default function Home() {
-  const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2,
-      },
-    },
-  }
-
-  const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.8, ease: 'easeOut' },
-    },
-  }
-
-  const features = [
-    {
-      icon: Zap,
-      title: 'AI-Powered',
-      description: 'Advanced algorithms that adapt to your study style and preferences',
-      color: 'from-yellow-500 to-orange-500',
-    },
-    {
-      icon: Calendar,
-      title: 'Smart Scheduling',
-      description: 'Optimized schedules with intelligent break placement and transitions',
-      color: 'from-blue-500 to-cyan-500',
-    },
-    {
-      icon: BarChart3,
-      title: 'Analytics',
-      description: 'Track productivity metrics and improve performance over time',
-      color: 'from-purple-500 to-pink-500',
-    },
-  ]
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-purple-900/10 to-black relative overflow-hidden flex flex-col">
-
       {/* Animated Background Elements */}
       <div className="fixed inset-0 -z-10 pointer-events-none">
-        <MotionDiv
-          className="absolute top-20 left-10 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl"
-          animate={{ y: [0, 50, 0], x: [0, 30, 0] }}
-          transition={{ duration: 8, repeat: Infinity }}
-        />
-        <MotionDiv
-          className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-600/20 rounded-full blur-3xl"
-          animate={{ y: [0, -50, 0], x: [0, -30, 0] }}
-          transition={{ duration: 10, repeat: Infinity }}
-        />
+        <div className="absolute top-20 left-10 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl animate-blob-1" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-600/20 rounded-full blur-3xl animate-blob-2" />
       </div>
 
       {/* Hero Section */}
       <section className="flex-1 flex items-center justify-center px-4 py-20 relative">
-        <MotionDiv
-          className="max-w-5xl mx-auto text-center relative z-10"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          {/* Badge */}
-          <MotionDiv variants={itemVariants} className="mb-8 flex justify-center">
+        <div className="max-w-5xl mx-auto text-center relative z-10">
+          <AnimatedItem delay={200} className="mb-8 flex justify-center">
             <div className="badge-premium">
               <Sparkles className="w-4 h-4" />
               <span>Powered by Advanced AI Agents</span>
             </div>
-          </MotionDiv>
+          </AnimatedItem>
 
-          {/* Hero Title */}
-          <MotionDiv variants={itemVariants}>
+          <AnimatedItem delay={300}>
             <h1 className="text-6xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight">
-              <span className="gradient-text">
-                Optimize Your
-              </span>
+              <span className="gradient-text">Optimize Your</span>
               <br />
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400">
                 Campus Day
               </span>
             </h1>
-          </MotionDiv>
+          </AnimatedItem>
 
-          {/* Subtitle */}
-          <MotionP
-            variants={itemVariants}
-            className="text-xl md:text-2xl text-white/60 mb-12 max-w-2xl mx-auto leading-relaxed font-light"
-          >
-            AI-powered schedule generation that adapts to your classes, goals, and study preferences. 
-            <span className="text-white font-semibold"> Make every moment count.</span>
-          </MotionP>
+          <AnimatedItem delay={400}>
+            <p className="text-xl md:text-2xl text-white/60 mb-12 max-w-2xl mx-auto leading-relaxed font-light">
+              AI-powered schedule generation that adapts to your classes, goals, and study preferences.{' '}
+              <span className="text-white font-semibold">Make every moment count.</span>
+            </p>
+          </AnimatedItem>
 
-          {/* CTA Buttons */}
-          <MotionDiv
-            variants={itemVariants}
-            className="flex flex-col md:flex-row gap-4 justify-center mb-16"
-          >
+          <AnimatedItem delay={500} className="flex flex-col md:flex-row gap-4 justify-center mb-16">
             <Link
               href="/signup"
               className="btn-premium flex items-center justify-center gap-2 group px-8 py-4 text-lg"
@@ -128,41 +94,27 @@ export default function Home() {
               <span>Try Demo</span>
               <Sparkles className="w-5 h-5" />
             </Link>
-          </MotionDiv>
+          </AnimatedItem>
 
-          {/* Features Grid */}
-          <MotionDiv
-            variants={itemVariants}
-            className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-20"
-          >
-            {features.map((feature, idx) => {
-              const Icon = feature.icon
-              return (
-                <MotionDiv
-                  key={idx}
-                  className="card-premium group"
-                  whileHover={{ y: -8 }}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.1, duration: 0.5 }}
-                >
-                  <div className="mb-4 flex justify-center">
-                    <div className={`p-3 rounded-2xl bg-gradient-to-br ${feature.color} shadow-2xl shadow-blue-500/20`}>
-                      <Icon className="w-8 h-8 text-white" />
-                    </div>
+          <AnimatedItem delay={600} className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-20">
+            {features.map((feature, idx) => (
+              <div key={idx} className="card-premium group">
+                <div className="mb-4 flex justify-center">
+                  <div className={`p-3 rounded-2xl bg-gradient-to-br ${feature.color} shadow-2xl shadow-blue-500/20`}>
+                    <feature.icon className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-xl font-bold mb-2 group-hover:text-cyan-400 transition-colors">{feature.title}</h3>
-                  <p className="text-white/60 text-sm leading-relaxed group-hover:text-white/80 transition-colors">{feature.description}</p>
-                </MotionDiv>
-              )
-            })}
-          </MotionDiv>
+                </div>
+                <h3 className="text-xl font-bold mb-2 group-hover:text-cyan-400 transition-colors">
+                  {feature.title}
+                </h3>
+                <p className="text-white/60 text-sm leading-relaxed group-hover:text-white/80 transition-colors">
+                  {feature.description}
+                </p>
+              </div>
+            ))}
+          </AnimatedItem>
 
-          {/* Stats */}
-          <MotionDiv
-            variants={itemVariants}
-            className="grid grid-cols-3 gap-6 mt-20 max-w-2xl mx-auto"
-          >
+          <AnimatedItem delay={700} className="grid grid-cols-3 gap-6 mt-20 max-w-2xl mx-auto">
             {[
               { label: 'Students', value: '10K+' },
               { label: 'Schedules', value: '50K+' },
@@ -173,17 +125,12 @@ export default function Home() {
                 <div className="text-sm text-white/60">{stat.label}</div>
               </div>
             ))}
-          </MotionDiv>
-        </MotionDiv>
+          </AnimatedItem>
+        </div>
       </section>
 
       {/* Footer CTA */}
-      <MotionSection 
-        className="relative py-20 px-4"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-      >
+      <section className="relative py-20 px-4 animate-fade-in-up" style={{ animationFillMode: 'forwards', opacity: 0, animationDelay: '800ms' }}>
         <div className="max-w-4xl mx-auto">
           <div className="glass p-12 rounded-3xl text-center border border-purple-500/30 hover:border-purple-500/60 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/20">
             <h2 className="text-4xl md:text-5xl font-black mb-4 gradient-text">
@@ -198,7 +145,7 @@ export default function Home() {
             </Link>
           </div>
         </div>
-      </MotionSection>
+      </section>
     </div>
   )
 }
